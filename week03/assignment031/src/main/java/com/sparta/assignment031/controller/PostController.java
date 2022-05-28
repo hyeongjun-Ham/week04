@@ -1,6 +1,10 @@
 package com.sparta.assignment031.controller;
 
 import com.sparta.assignment031.domain.*;
+import com.sparta.assignment031.dto.PostDetailDto;
+import com.sparta.assignment031.dto.PostListDto;
+import com.sparta.assignment031.dto.PostRequestDto;
+import com.sparta.assignment031.repository.PostRepository;
 import com.sparta.assignment031.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

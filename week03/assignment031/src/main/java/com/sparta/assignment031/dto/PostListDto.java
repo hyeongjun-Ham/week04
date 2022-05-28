@@ -1,5 +1,6 @@
-package com.sparta.assignment031.domain;
+package com.sparta.assignment031.dto;
 
+import com.sparta.assignment031.domain.Post;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

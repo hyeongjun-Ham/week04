@@ -1,5 +1,6 @@
 package com.sparta.assignment031.domain;
 
+import com.sparta.assignment031.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

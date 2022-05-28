@@ -1,5 +1,6 @@
-package com.sparta.assignment031.domain;
+package com.sparta.assignment031.repository;
 
+import com.sparta.assignment031.domain.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

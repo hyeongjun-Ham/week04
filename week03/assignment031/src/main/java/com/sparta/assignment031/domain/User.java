@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 
-
 @NoArgsConstructor
 @Getter
 @Entity
@@ -15,7 +14,7 @@ public class User {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private Long id;
+    private Long userId;
 
     @Column(nullable = false,unique = true)
     private String username;

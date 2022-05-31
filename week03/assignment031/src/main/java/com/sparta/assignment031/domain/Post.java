@@ -1,10 +1,16 @@
 package com.sparta.assignment031.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.assignment031.dto.PostRequestDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 
 @NoArgsConstructor
 @Getter
@@ -13,7 +19,7 @@ public class Post extends Timestamped{
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private Long id;
+    private Long postId;
 
     @Column(nullable = false)
     private String title;
@@ -25,6 +31,7 @@ public class Post extends Timestamped{
 
     @Column(nullable = false)
     private String contents;
+
 
     public Post(String title, String name, String contents, String password) {
         this.title = title;

@@ -44,6 +44,7 @@ public class UserService {
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()){
             throw new IllegalArgumentException("중복된 사용자 ID가 존재합니다.");
+
         }
 
         // 패스워드 암호화

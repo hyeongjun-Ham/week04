@@ -19,7 +19,7 @@ public class Post extends Timestamped{
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    private Long postId;
+    private Long id;
 
     @Column(nullable = false)
     private String title;

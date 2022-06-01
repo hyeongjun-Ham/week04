@@ -15,7 +15,7 @@ public class PostListDto {
         private String name;
 
         public PostListDto(Post post) {
-                this.id = post.getPostId();
+                this.id = post.getId();
                 this.title = post.getTitle();
                 this.name = post.getName();
                 this.starDate = post.getStarDate();

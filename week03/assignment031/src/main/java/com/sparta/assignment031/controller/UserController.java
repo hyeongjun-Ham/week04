@@ -15,10 +15,10 @@ public class UserController {
     private final UserService userService;
 
     // 회원 로그인 페이지
-    @GetMapping("/user/loginView")
-    public String login() {
-        return "login";
-    }
+//    @GetMapping("/user/loginView")
+//    public String login() {
+//        return "login";
+//    }
 
     // 회원 가입 페이지
     @GetMapping("/user/signup")

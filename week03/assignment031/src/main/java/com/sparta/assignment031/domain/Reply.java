@@ -16,16 +16,10 @@ import javax.persistence.*;
 public class Reply extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long replyId;
+    private Long id;
 
     @Column(nullable = false)
     private String contents;
-
-    @Column(nullable = false)
-    private Long postId;
-
-    @Column(nullable = false)
-    private Long userId;
 
     @ManyToOne
     @JoinColumn

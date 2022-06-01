@@ -17,8 +17,9 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 public class Post extends Timestamped{
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @Column(name = "post_id")
     private Long id;
 
     @Column(nullable = false)
@@ -32,8 +33,11 @@ public class Post extends Timestamped{
     @Column(nullable = false)
     private String contents;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    List<Reply> replies = new ArrayList<>();
 
     public Post(String title, String name, String contents, String password) {
+
         this.title = title;
         this.name = name;
         this.contents = contents;

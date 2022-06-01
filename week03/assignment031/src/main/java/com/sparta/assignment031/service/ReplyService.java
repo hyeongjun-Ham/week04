@@ -1,12 +1,8 @@
 package com.sparta.assignment031.service;
 
-import com.sparta.assignment031.domain.Post;
 import com.sparta.assignment031.domain.Reply;
-import com.sparta.assignment031.dto.PostRequestDto;
 import com.sparta.assignment031.dto.ReplyRequestDto;
-import com.sparta.assignment031.repository.PostRepository;
 import com.sparta.assignment031.repository.ReplyRepository;
-import com.sparta.assignment031.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

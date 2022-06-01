@@ -3,10 +3,13 @@ package com.sparta.assignment031.security;
 import com.sparta.assignment031.security.filter.FormLoginFilter;
 import com.sparta.assignment031.security.filter.JwtAuthFilter;
 import com.sparta.assignment031.security.jwt.HeaderTokenExtractor;
+import com.sparta.assignment031.security.jwt.JwtAccessDeniedHandler;
+import com.sparta.assignment031.security.jwt.JwtAuthenticationEntryPoint;
 import com.sparta.assignment031.security.provider.FormLoginAuthProvider;
 import com.sparta.assignment031.security.provider.JWTAuthProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -29,12 +32,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final JWTAuthProvider jwtAuthProvider;
     private final HeaderTokenExtractor headerTokenExtractor;
 
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
     public WebSecurityConfig(
             JWTAuthProvider jwtAuthProvider,
-            HeaderTokenExtractor headerTokenExtractor
+            HeaderTokenExtractor headerTokenExtractor,
+            JwtAccessDeniedHandler jwtAccessDeniedHandler,
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint
     ) {
+
         this.jwtAuthProvider = jwtAuthProvider;
         this.headerTokenExtractor = headerTokenExtractor;
+        this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 
     @Bean
@@ -78,9 +90,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/user/**").permitAll()
-                .antMatchers("/api/posts").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/replies").permitAll()
                 .anyRequest()
-                .permitAll()
+                .authenticated()
                 .and()
                 // [로그아웃 기능]
                 .logout()
@@ -89,7 +102,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .exceptionHandling()
-                // "접근 불가" 페이지 URL 설정
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+
+        // "접근 불가" 페이지 URL 설정
 //                .accessDeniedPage("/forbidden.html")
         ;
 

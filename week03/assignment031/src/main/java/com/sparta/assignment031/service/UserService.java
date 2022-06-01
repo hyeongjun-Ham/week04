@@ -4,6 +4,8 @@ import com.sparta.assignment031.domain.User;
 import com.sparta.assignment031.dto.SignupRequestDto;
 import com.sparta.assignment031.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,7 @@ public class UserService {
         String patternId = "^([a-zA-z\\d]{3,})$";
         if(!Pattern.matches(patternId,username)){
             throw new IllegalArgumentException("아이디를 다시 확인해 주세요");
+//            new ResponseEntity<>("아이디를 다시 확인해 주세요", HttpStatus.BAD_REQUEST);
         }
 
         //password 최소 4자, 닉네임과 같은값 포함된 경우 회원가입 실패

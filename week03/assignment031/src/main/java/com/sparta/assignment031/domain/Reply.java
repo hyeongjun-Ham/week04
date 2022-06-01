@@ -1,7 +1,7 @@
 package com.sparta.assignment031.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.assignment031.dto.ReplyRequestDto;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,17 +15,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Reply extends Timestamped {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
     private String contents;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "post_id")
     private Post post;
 
-    public Reply(Long id,ReplyRequestDto requestDto) {
+    public Reply(Post post, ReplyRequestDto requestDto) {
+        this.post = post;
         this.contents = requestDto.getContents();
     }
 

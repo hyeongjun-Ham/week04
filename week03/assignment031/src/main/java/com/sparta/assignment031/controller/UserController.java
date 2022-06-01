@@ -15,10 +15,10 @@ public class UserController {
     private final UserService userService;
 
     // 회원 로그인 페이지
-//    @GetMapping("/user/loginView")
-//    public String login() {
-//        return "login";
-//    }
+    @GetMapping("/user/loginView")
+    public String login() {
+        return "login";
+    }
 
     // 회원 가입 페이지
     @GetMapping("/user/signup")
@@ -30,6 +30,6 @@ public class UserController {
     @PostMapping("/user/signup")
     public String registerUser(@RequestBody SignupRequestDto requestDto) {
         userService.registerUser(requestDto);
-        return "redirect:/user/login";
+        return "회원가입 성공";
     }
 }

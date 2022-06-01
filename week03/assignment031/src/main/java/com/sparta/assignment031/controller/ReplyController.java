@@ -5,22 +5,19 @@ import com.sparta.assignment031.domain.Reply;
 import com.sparta.assignment031.dto.ReplyRequestDto;
 import com.sparta.assignment031.repository.PostRepository;
 import com.sparta.assignment031.repository.ReplyRepository;
-import com.sparta.assignment031.repository.UserRepository;
 import com.sparta.assignment031.service.ReplyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ReplyController {
 
     private final ReplyService replyService;
 
     private final ReplyRepository replyRepository;
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
     //댓글 목록조회
@@ -36,9 +33,7 @@ public class ReplyController {
                 ()->new IllegalArgumentException("아이디가 없습니다.")
         );
         //post자체를 넣어야함
-        Reply reply = new Reply();
-        reply.setPost(post);
-        reply.setContents(requestDto.getContents());
+        Reply reply = new Reply(post, requestDto);
         return replyRepository.save(reply);
     }
 

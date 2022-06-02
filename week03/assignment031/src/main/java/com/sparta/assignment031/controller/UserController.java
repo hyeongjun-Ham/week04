@@ -1,8 +1,10 @@
 package com.sparta.assignment031.controller;
 
+import com.sparta.assignment031.domain.User;
 import com.sparta.assignment031.dto.SignupRequestDto;
 import com.sparta.assignment031.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +30,8 @@ public class UserController {
 
     // 회원 가입 요청 처리
     @PostMapping("/user/signup")
-    public String registerUser(@RequestBody SignupRequestDto requestDto) {
-        userService.registerUser(requestDto);
-        return "회원가입 성공";
+    public ResponseEntity registerUser(@RequestBody SignupRequestDto requestDto) {
+
+        return userService.registerUser(requestDto);
     }
 }

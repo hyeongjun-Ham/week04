@@ -20,6 +20,7 @@ public class PostController {
     //등록
     @PostMapping("/api/posts")
     public Post createPost(@RequestBody PostRequestDto requestDto) {
+
         Post post = new Post(requestDto);
         return postRepository.save(post);
     }

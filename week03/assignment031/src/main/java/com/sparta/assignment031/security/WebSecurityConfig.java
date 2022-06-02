@@ -10,7 +10,6 @@ import com.sparta.assignment031.security.provider.JWTAuthProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -59,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
                 .authenticationProvider(formLoginAuthProvider())
                 .authenticationProvider(jwtAuthProvider);
+
     }
 
     @Override
@@ -88,26 +88,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        http.authorizeRequests()
+
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .and()
+                .authorizeRequests()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/replies").permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers(HttpMethod.GET, "/replies/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 // [로그아웃 기능]
                 .logout()
                 // 로그아웃 요청 처리 URL
                 .logoutUrl("/user/logout")
-                .permitAll()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .permitAll();
 
         // "접근 불가" 페이지 URL 설정
 //                .accessDeniedPage("/forbidden.html")
-        ;
 
     }
 
@@ -116,10 +116,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         FormLoginFilter formLoginFilter = new FormLoginFilter(authenticationManager());
         formLoginFilter.setFilterProcessesUrl("/user/login");
         formLoginFilter.setAuthenticationSuccessHandler(formLoginSuccessHandler());
+        formLoginFilter.setAuthenticationFailureHandler(formLoginFailureHandler());
         formLoginFilter.afterPropertiesSet();
         return formLoginFilter;
     }
 
+    @Bean
+    public FormLoginFailureHandler formLoginFailureHandler() {
+        return new FormLoginFailureHandler();
+    }
     @Bean
     public FormLoginSuccessHandler formLoginSuccessHandler() {
         return new FormLoginSuccessHandler();
@@ -133,9 +138,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthFilter jwtFilter() throws Exception {
         List<String> skipPathList = new ArrayList<>();
 
-        // Static 정보 접근 허용
-        skipPathList.add("GET,/images/**");
-        skipPathList.add("GET,/css/**");
+        skipPathList.add("GET,/api/posts");
+        skipPathList.add("GET,/replies/**");
 
         // h2-console 허용
         skipPathList.add("GET,/h2-console/**");
@@ -144,10 +148,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/user/**");
         skipPathList.add("POST,/user/signup");
 
-        skipPathList.add("GET,/");
-        skipPathList.add("GET,/basic.js");
-
-        skipPathList.add("GET,/favicon.ico");
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(
                 skipPathList,
@@ -161,11 +161,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setAuthenticationManager(super.authenticationManagerBean());
 
         return filter;
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
     }
 }
